@@ -1,6 +1,6 @@
 # Classification-tensorflow
 This is a image classification implementation in tensorflow. 
-> Include:SqueezeNet,Xception,MobileNetV1、V2、V3,ShuffleNetV1、V2.  
+> Include：SqueezeNet,Xception,MobileNetV1、V2、V3,ShuffleNetV1、V2.  
 > TODO：LeNet,AlexNet,VGG,ResNet,Inception,ResNext,DenseNet,SENet. 
 
 # TODO:
@@ -14,21 +14,21 @@ tensorflow
 
 # data structure
 dateset dir  
-  --train  
-    -- class1  
-    -- class2  
-    -- class3  
-    --...  
-  --val   
-    --class1  
-    --class2  
-    --class3  
-    --... 
+>   --train  
+>     -- class1  
+>     -- class2  
+>     -- class3  
+>     --...  
+>   --val   
+>    --class1  
+>     --class2  
+>     --class3  
+>     --... 
 # label map
 label.txt  
-  class1:0   
-  class2:1  
-  class3:2  
+>   class1:0   
+>   class2:1  
+>   class3:2  
   ...  
 # Usage
 ## train
