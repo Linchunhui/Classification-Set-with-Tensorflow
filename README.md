@@ -1,6 +1,6 @@
 # Classification-tensorflow
 This is a image classification implementation in tensorflow. 
-> Include:SqueezeNet,Xception,MobileNetV1、V2、V3,ShuffleNetV1、V2. 
+> Include:SqueezeNet,Xception,MobileNetV1、V2、V3,ShuffleNetV1、V2.  
 > TODO：LeNet,AlexNet,VGG,ResNet,Inception,ResNext,DenseNet,SENet. 
 
 # TODO:
