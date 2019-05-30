@@ -9,8 +9,8 @@ Network structure interpretation
 # requirement
 python  
 cuda  
-cudnn 
-tensorflow 
+cudnn  
+tensorflow  
 
 # data structure
 dateset dir 
