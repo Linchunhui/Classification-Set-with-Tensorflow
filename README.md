@@ -13,23 +13,23 @@ cudnn
 tensorflow  
 
 # data structure
-dateset dir 
-  --train 
-    -- class1 
-    -- class2 
-    -- class3 
-    --... 
-  --val  
-    --class1 
-    --class2 
-    --class3 
+dateset dir  
+  --train  
+    -- class1  
+    -- class2  
+    -- class3  
+    --...  
+  --val   
+    --class1  
+    --class2  
+    --class3  
     --... 
 # label map
-label.txt 
-  class1:0  
-  class2:1 
-  class3:2 
-  ... 
+label.txt  
+  class1:0   
+  class2:1  
+  class3:2  
+  ...  
 # Usage
 ## train
 python train.py --train_dir="D:/train" 
