@@ -13,6 +13,21 @@ from net.ShuffleNet import get_model
 from net.ShuffleNetV2 import ShuffleNetV2
 from net.SqueezeNet import squeeze_net
 from net.Xception import XceptionModel
+from net.IGCV3 import IGCV3FPN
+
+from net.AlexNet import alexnet
+from net.Vgg import vgg_a,vgg_16,vgg_19
+from net.InceptionV1 import inception_v1
+from net.InceptionV2 import inception_v2
+from net.InceptionV3 import inception_v3
+from net.InceptionV4 import inception_v4
+from net.Inception_ResNetV2 import inception_resnet_v2
+from net.ResNetV1 import resnet_v1_50, resnet_v1_101, resnet_v1_152, resnet_v1_200
+from net.ResNetV2 import resnet_v2_50, resnet_v2_101, resnet_v2_152, resnet_v2_200
+from net.DenseNet import densenet121, densenet161, densenet169
+from net.SE_Inception_ResNetV2 import SE_Inception_resnet_v2
+from net.SE_InceptionV4 import SE_Inception_v4
+from net.SE_ResNeXt import SE_ResNeXt
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # gpu编号
 config = tf.ConfigProto()
@@ -70,19 +85,47 @@ def init_tf(logs_train_dir,model,size,N_CLASSES):
     if model == "SqueezeNet":
         logits = squeeze_net(x_4d, classes=N_CLASSES)
     if model == "MobileNetV1":
-        logits = MobileNetV1(x_4d, num_classes=N_CLASSES, is_training=True).output
+        logits = MobileNetV1(x_4d, num_classes=N_CLASSES, is_training=False).output
     if model == "MobileNetV2":
-        logits = MobileNetV2(x_4d, num_classes=N_CLASSES, is_training=True).output
+        logits = MobileNetV2(x_4d, num_classes=N_CLASSES, is_training=False).output
     if model == "MobileNetV3_small":
-        logits, _ = mobilenet_v3_small(x_4d, N_CLASSES, multiplier=1.0, is_training=True, reuse=None)
+        logits, _ = mobilenet_v3_small(x_4d, N_CLASSES, multiplier=1.0, is_training=False, reuse=None)
     if model == "MobileNetV3_large":
-        logits, _ = mobilenet_v3_large(x_4d, N_CLASSES, multiplier=1.0, is_training=True, reuse=None)
+        logits, _ = mobilenet_v3_large(x_4d, N_CLASSES, multiplier=1.0, is_training=False, reuse=None)
     if model == "ShuffleNet":
         logits = get_model(x_4d, N_CLASSES)
     if model == "ShuffleNetV2":
-        logits = ShuffleNetV2(x_4d, N_CLASSES, model_scale=2.0, is_training=True).output
+        logits = ShuffleNetV2(x_4d, N_CLASSES, model_scale=2.0, is_training=False).output
     if model == "Xception":
-        logits = XceptionModel(x_4d, N_CLASSES, is_training=True, )
+        logits = XceptionModel(x_4d, N_CLASSES, is_training=False)
+    if model == "IGCV3":
+        logits = IGCV3FPN(x=x_4d, num_classes=N_CLASSES, is_training=False).classifier_logits
+    if model == "AlexNet":
+        logits = alexnet(x=x_4d, keep_prob=0.5, num_classes=N_CLASSES)
+    if model == "VGG-19":           #default vgg-19
+        logits, _ = vgg_19(inputs=x_4d,num_classes=N_CLASSES, is_training=False, dropout_keep_prob=0.5)
+    if model == "InceptionV1":
+        logits, _ = inception_v1(inputs=x_4d, num_classes=N_CLASSES,dropout_keep_prob=0.5, is_training=False)
+    if model == "InceptionV2":
+        logits, _ = inception_v2(inputs=x_4d, num_classes=N_CLASSES, dropout_keep_prob=0.5, is_training=False)
+    if model == "InceptionV3":
+        logits, _ = inception_v3(inputs=x_4d, num_classes=N_CLASSES, dropout_keep_prob=0.5, is_training=False)
+    if model == "InceptionV4":
+        logits, _ = inception_v4(inputs=x_4d, num_classes=N_CLASSES, dropout_keep_prob=0.5, is_training=False)
+    if model == "ResNetV1":         #default resnet-101
+        logits, _ = resnet_v1_101(inputs=x_4d, num_classes=N_CLASSES, is_training=False)
+    if model == "ResNetV2":         #default resnet-101
+        logits, _ = resnet_v2_101(inputs=x_4d, num_classes=N_CLASSES, is_training=False)
+    if model == "Inception_ResNetV2":
+        logits, _ = inception_resnet_v2(inputs=x_4d, num_classes=N_CLASSES, is_training=False)
+    if model == "DenseNet":         #default densenet-121
+        logits, _ = densenet121(inputs=x_4d, num_classes=N_CLASSES, is_training=False)
+    if model == "SE_Inception_ResNetV2":
+        logits = SE_Inception_resnet_v2(x=x_4d,classes_num=N_CLASSES,training=False)
+    if model == "SE_InceptionV4":
+        logits = SE_Inception_v4(x=x_4d, class_num=N_CLASSES, training=False)
+    if model == "SE_ResNeXt":
+        logits = SE_ResNeXt(x=x_4d, class_num=N_CLASSES, training=False)
     else:
         raise ValueError('Unsupported model .')
 

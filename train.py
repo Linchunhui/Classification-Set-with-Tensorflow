@@ -17,7 +17,21 @@ from net.ShuffleNet import get_model
 from net.ShuffleNetV2 import ShuffleNetV2
 from net.SqueezeNet import squeeze_net
 from net.Xception import XceptionModel
+from net.IGCV3 import IGCV3FPN
 
+from net.AlexNet import alexnet
+from net.Vgg import vgg_a,vgg_16,vgg_19
+from net.InceptionV1 import inception_v1
+from net.InceptionV2 import inception_v2
+from net.InceptionV3 import inception_v3
+from net.InceptionV4 import inception_v4
+from net.Inception_ResNetV2 import inception_resnet_v2
+from net.ResNetV1 import resnet_v1_50, resnet_v1_101, resnet_v1_152, resnet_v1_200
+from net.ResNetV2 import resnet_v2_50, resnet_v2_101, resnet_v2_152, resnet_v2_200
+from net.DenseNet import densenet121, densenet161, densenet169
+from net.SE_Inception_ResNetV2 import SE_Inception_resnet_v2
+from net.SE_InceptionV4 import SE_Inception_v4
+from net.SE_ResNeXt import SE_ResNeXt
 
 def main(argv):
     parser = argparse.ArgumentParser()
@@ -62,15 +76,6 @@ def main(argv):
         default="MoblieNetV3_small",
         help="model.")
 
-    parser.add_argument(
-        "--weights",
-        help="Fine tune with other weights.")
-
-    parser.add_argument(
-        "--tclasses",
-        default=0,
-        help="The number of classes of pre-trained model.")
-
     args = parser.parse_args()
     train(train_dir=args.train_dir,size=int(args.size),BATCH_SIZE=int(args.BATCH_SIZE),N_CLASSES=int(args.N_ClASSES),init_lr= \
           float(args.init_lr),decay_steps=int(args.decay_steps),logs_train_dir=args.logs_train_dir,epochs=int(args.epochs),model=args.model)
@@ -99,21 +104,51 @@ def train(train_dir,size,BATCH_SIZE,N_CLASSES,init_lr,decay_steps,logs_train_dir
     if model =="MobileNetV3_small":
         logits, _ = mobilenet_v3_small(batch_train, N_CLASSES, multiplier=1.0, is_training=True, reuse=None)
     if model == "MobileNetV3_large":
-        logits, _ = mobilenet_v3_large(batch_train,N_CLASSES, multiplier = 1.0, is_training = True, reuse = None)
+        logits, _ = mobilenet_v3_large(batch_train, N_CLASSES, multiplier=1.0, is_training = True, reuse = None)
     if model == "ShuffleNet":
-        logits = get_model(batch_train,N_CLASSES)
+        logits = get_model(batch_train, N_CLASSES)
     if model == "ShuffleNetV2":
         logits  = ShuffleNetV2(batch_train, N_CLASSES, model_scale=2.0, is_training=True).output
     if model == "Xception":
-        logits = XceptionModel(batch_train,N_CLASSES,is_training=True,)
+        logits = XceptionModel(batch_train,N_CLASSES, is_training=True)
+    if model == "IGCV3":
+        logits = IGCV3FPN(x=batch_train,num_classes=N_CLASSES, is_training=True).classifier_logits
+    if model == "AlexNet":
+        logits = alexnet(x=batch_train, keep_prob=0.5, num_classes=N_CLASSES)
+    if model == "VGG-19":           #default vgg-19
+        logits, _ = vgg_19(inputs=batch_train,num_classes=N_CLASSES, is_training=True, dropout_keep_prob=0.5)
+    if model == "InceptionV1":
+        logits, _ = inception_v1(inputs=batch_train, num_classes=N_CLASSES, dropout_keep_prob=0.5, is_training=True)
+    if model == "InceptionV2":
+        logits, _ = inception_v2(inputs=batch_train, num_classes=N_CLASSES, dropout_keep_prob=0.5, is_training=True)
+    if model == "InceptionV3":
+        logits, _ = inception_v3(inputs=batch_train, num_classes=N_CLASSES, dropout_keep_prob=0.5, is_training=True)
+    if model == "InceptionV4":
+        logits, _ = inception_v4(inputs=batch_train, num_classes=N_CLASSES, dropout_keep_prob=0.5, is_training=True)
+    if model == "ResNetV1":         #default resnet-101
+        logits, _ = resnet_v1_101(inputs=batch_train, num_classes=N_CLASSES, is_training=True)
+    if model == "ResNetV2":         #default resnet-101
+        logits, _ = resnet_v2_101(inputs=batch_train, num_classes=N_CLASSES, is_training=True)
+    if model == "Inception_ResNetV2":
+        logits, _ = inception_resnet_v2(inputs=batch_train, num_classes=N_CLASSES, is_training=True)
+    if model == "DenseNet":         #default densenet-121
+        logits, _ = densenet121(inputs=batch_train, num_classes=N_CLASSES, is_training=True)
+    if model == "SE_Inception_ResNetV2":
+        logits = SE_Inception_resnet_v2(x=batch_train, classes_num=N_CLASSES, training=True)
+    if model == "SE_InceptionV4":
+        logits = SE_Inception_v4(x=batch_train, class_num=N_CLASSES, training=True)
+    if model == "SE_ResNeXt":
+        logits = SE_ResNeXt(x=batch_train, class_num=N_CLASSES, training=True)
     else:
         raise ValueError('Unsupported model .')
 
     print(logits.get_shape())
 
     # loss
+    label_smoothing=0.1
     one_hot_labels = slim.one_hot_encoding(batch_labels, N_CLASSES)
-    cross_entropy = tf.nn.sigmoid_cross_entropy_with_logits(logits=logits, labels=one_hot_labels)   #多标签
+    one_hot_labels = (1.0 - label_smoothing) * one_hot_labels + label_smoothing / N_CLASSES #标签平滑
+    cross_entropy = tf.nn.sigmoid_cross_entropy_with_logits(logits=logits, labels=one_hot_labels)   #sigmoid 多标签
     #cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=logits, labels=one_hot_labels)
     loss = tf.reduce_mean(cross_entropy, name='loss')
     tf.summary.scalar('train_loss', loss)

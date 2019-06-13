@@ -40,26 +40,41 @@ def get_batch(image, label, image_W, image_H, batch_size, capacity):
     input_queue = tf.train.slice_input_producer([image, label], shuffle=False)
     label = input_queue[1]
     image_contents = tf.read_file(input_queue[0])
-    #sess=tf.Session()
-    #print(sess.run(image_contents))
-    image = tf.image.decode_jpeg(image_contents, channels=3)
-    # 数据增强
-    # image = tf.image.resize_image_with_pad(image, target_height=image_W, target_width=image_H)
-    image = tf.image.resize_images(image, (image_W, image_H))
-    # 随机左右翻转
-    image = tf.image.random_flip_left_right(image)
-    # 随机上下翻转
-    image = tf.image.random_flip_up_down(image)
-    # 随机设置图片的亮度
-    image = tf.image.random_brightness(image, max_delta=32 / 255.0)
-    # 随机设置图片的对比度
-    # image = tf.image.random_contrast(image, lower=0.5, upper=1.5)
-    # 随机设置图片的色度
-    image = tf.image.random_hue(image, max_delta=0.05)
-    # 随机设置图片的饱和度
-    # image = tf.image.random_saturation(image, lower=0.5, upper=1.5)
-    # 标准化,使图片的均值为0，方差为1
-    image = tf.image.per_image_standardization(image)
+    # sess=tf.Session()
+    # print(sess.run(image_contents))
+    with tf.name_scope('distort_image', image):
+        image = tf.image.decode_jpeg(image_contents, channels=3)
+        tf.summary.image('original image', tf.expand_dims(image, 0))
+        # 数据增强
+        # image = tf.image.resize_image_with_pad(image, target_height=image_W, target_width=image_H)
+        image = tf.image.resize_images(image, (image_W, image_H))
+        tf.summary.image('resize image', tf.expand_dims(image, 0))
+        # 随机左右翻转
+        image = tf.image.random_flip_left_right(image)
+        tf.summary.image('flip_left_right image', tf.expand_dims(image, 0))
+        # 随机上下翻转
+        image = tf.image.random_flip_up_down(image)
+        tf.summary.image('flip_up_down image', tf.expand_dims(image, 0))
+
+        # 随机设置图片的亮度
+        image = tf.image.random_brightness(image, max_delta=32 / 255.0)
+        tf.summary.image('bright image', tf.expand_dims(image, 0))
+
+        # 随机设置图片的对比度
+        image = tf.image.random_contrast(image, lower=0.5, upper=1.5)
+        tf.summary.image('contrast image', tf.expand_dims(image, 0))
+
+        # 随机设置图片的色度
+        image = tf.image.random_hue(image, max_delta=0.05)
+        tf.summary.image('hue image', tf.expand_dims(image, 0))
+
+        # 随机设置图片的饱和度
+        image = tf.image.random_saturation(image, lower=0.5, upper=1.5)
+        tf.summary.image('saturation image', tf.expand_dims(image, 0))
+
+        image = tf.image.per_image_standardization(image)
+        tf.summary.image('standardization image', tf.expand_dims(image, 0))
+
     image_batch, label_batch = tf.train.batch([image, label],
                                               batch_size=batch_size,
                                               num_threads=64,
