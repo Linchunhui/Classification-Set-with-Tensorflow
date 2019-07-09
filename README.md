@@ -50,5 +50,6 @@ python inference.py
 		--N_CLASSES=3  
 		--cate="['class1','class2','class3'...]"  
 		--model="MobileNetV3_small" 
-    
+# Tips
+Sometimes spying images from website according to the error images is a simple but effective method to increase to accuracy.You can spy from "Baidu" using `spider.py` in `data_preprocessing`.And then rename them to avoid Chinese character.Finally,you must check if the image is undamaged with `readimg.py`.
 
