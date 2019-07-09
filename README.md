@@ -46,9 +46,9 @@ python train.py
 python inference.py   
 		--data_dir="D:/RoadMapSample/"  
 		--save_dir="D:/res/"  
-		--logs_train_dir="./model_save/model.ckpt-24000" 
-		--N_CLASSES=3 
-		--cate="['class1','class2','class3'...]" 
+		--logs_train_dir="./model_save/model.ckpt-24000"  
+		--N_CLASSES=3  
+		--cate="['class1','class2','class3'...]"  
 		--model="MobileNetV3_small" 
     
 
