@@ -1,7 +1,7 @@
 # Classification-tensorflow
 This is a image classification implementation in tensorflow. 
 > Include：SqueezeNet,Xception,MobileNetV1、V2、V3,ShuffleNetV1、V2.  
-> TODO：LeNet,AlexNet,VGG,ResNet,Inception,ResNext,DenseNet,SENet. 
+> Include：LeNet,AlexNet,VGG,ResNet,Inception,ResNext,DenseNet,SENet. 
 
 # TODO:
 Network structure interpretation 
@@ -32,9 +32,9 @@ label.txt
   ...  
 # Usage
 ## train
-python train.py --train_dir="D:/train" 
-		--logs_train_dir="./model_save" 
-		--N_CLASSES=3 
+python train.py --train_dir="D:/train"  
+		--logs_train_dir="./model_save"  
+		--N_CLASSES=3  
 		--size=224 
 		--BATCH_SIZE=32 
 		--epochs=50 
