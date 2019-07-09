@@ -32,15 +32,16 @@ label.txt
   ...  
 # Usage
 ## train
-python train.py --train_dir="D:/train"  
+python train.py 
+		--train_dir="D:/train"  
 		--logs_train_dir="./model_save"  
-		--N_CLASSES=3  
-		--size=224 
-		--BATCH_SIZE=32 
-		--epochs=50 
-		--inin_lr=0.01 
-		--decay_steps=20 
-		--model="MobileNetV3_small" 
+		--N_CLASSES=3   
+		--size=224  
+		--BATCH_SIZE=32  
+		--epochs=50  
+		--inin_lr=0.01  
+		--decay_steps=20  
+		--model="MobileNetV3_small"  
 ## inference
 python inference.py --data_dir="D:/RoadMapSample/" 
 		                --save_dir="D:/res/" 
