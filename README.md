@@ -32,7 +32,7 @@ label.txt
   ...  
 # Usage
 ## train
-python train.py 
+python train.py   
 		--train_dir="D:/train"  
 		--logs_train_dir="./model_save"  
 		--N_CLASSES=3   
@@ -43,11 +43,12 @@ python train.py
 		--decay_steps=20  
 		--model="MobileNetV3_small"  
 ## inference
-python inference.py --data_dir="D:/RoadMapSample/" 
-		                --save_dir="D:/res/" 
-		                --logs_train_dir="./model_save/model.ckpt-24000" 
-	                  	--N_CLASSES=3 
-	                 	 --cate="['class1','class2','class3'...]" 
-		                --model="MobileNetV3_small" 
+python inference.py   
+		--data_dir="D:/RoadMapSample/"  
+		--save_dir="D:/res/"  
+		--logs_train_dir="./model_save/model.ckpt-24000" 
+		--N_CLASSES=3 
+		--cate="['class1','class2','class3'...]" 
+		--model="MobileNetV3_small" 
     
 
