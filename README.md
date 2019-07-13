@@ -32,7 +32,7 @@ label.txt
   ...  
 # Usage
 ## train
-'''
+```
 python train.py   
 		--train_dir="D:/train"  
 		--logs_train_dir="./model_save"  
@@ -43,9 +43,9 @@ python train.py
 		--inin_lr=0.01  
 		--decay_steps=20  
 		--model="MobileNetV3_small" 
-'''
+```
 ## inference
-'''
+```
 python inference.py   
 		--data_dir="D:/RoadMapSample/"  
 		--save_dir="D:/res/"  
@@ -53,7 +53,7 @@ python inference.py
 		--N_CLASSES=3  
 		--cate="['class1','class2','class3'...]"  
 		--model="MobileNetV3_small" 
-'''
+```
 # Tips
 Sometimes spying images from website according to the error images is a simple but effective method to increase to accuracy.You can spy from "Baidu" using `spider.py` in `data_preprocessing`.And then rename them to avoid Chinese character.Finally,you must check if the image is undamaged with `readimg.py`.
 
